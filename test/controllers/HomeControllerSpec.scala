@@ -30,6 +30,21 @@ class HomeControllerSpec
 
     }
 
+    "return valid person in response" in {
+      val homeController = inject[HomeController]
+
+      val request = FakeRequest()
+        .withJsonBody(Json.toJson(person))
+        .withHeaders(CONTENT_TYPE -> JSON)
+
+      val response = homeController.accept.apply(request)
+
+      val body = contentAsJson(response).validate[Person]
+
+      assert(body.isSuccess)
+      assert(body.get === person)
+    }
+
   }
 
 }
